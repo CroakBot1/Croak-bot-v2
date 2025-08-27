@@ -10,7 +10,7 @@
   --radius:18px; --ease:cubic-bezier(.2,.9,.3,1);
 }
 html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:#e6f7ff}
-body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow-x:hidden;display:flex;align-items:center;justify-content:center;padding:12px}
+body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow:hidden;display:flex;align-items:center;justify-content:center;padding:0}
 
 /* background fx */
 .bg-blobs{position:fixed;inset:-20%;z-index:0;filter:blur(70px);opacity:.9;pointer-events:none}
@@ -76,7 +76,6 @@ body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow-x:hidden;
   .content h1{font-size:22px}
 }
 @media (max-width:480px){
-  body{padding:8px}
   .card{padding:16px}
   .logo{width:90px;height:90px;font-size:22px}
   .content h1{font-size:20px}
@@ -89,7 +88,6 @@ body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow-x:hidden;
 <body>
 <!-- background blobs -->
 <svg class="bg-blobs" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
-  <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#05263a"/><stop offset="1" stop-color="#071b2b"/></linearGradient></defs>
   <g>
     <ellipse cx="120" cy="80" rx="260" ry="140" fill="#07304a" opacity="0.6"></ellipse>
     <ellipse cx="700" cy="520" rx="300" ry="200" fill="#03405a" opacity="0.5"></ellipse>
@@ -162,7 +160,7 @@ const typingEl=document.getElementById('typing');const phrases=['Adaptive market
 function typeStep(){const cur=phrases[i];if(forward){j++;typingEl.textContent=cur.slice(0,j);if(j===cur.length){forward=false;setTimeout(typeStep,900);return}}else{j--;typingEl.textContent=cur.slice(0,j);if(j===0){forward=true;i=(i+1)%phrases.length}}setTimeout(typeStep,forward?90:40)}
 typeStep();
 
-// bubble dismiss + buttons
+// dismiss bubble fx
 const overlay=document.querySelector('.overlay');const bubble=document.createElement('div');bubble.style.position='fixed';bubble.style.width='220px';bubble.style.height='220px';bubble.style.borderRadius='50%';bubble.style.pointerEvents='none';bubble.style.zIndex='18';bubble.style.background='radial-gradient(circle at 35% 30%, rgba(122,252,255,0.95), rgba(122,252,255,0.18) 40%, transparent 70%)';bubble.style.filter='blur(6px)';document.body.appendChild(bubble);
 function dismiss(x=null,y=null){if(x&&y){bubble.style.left=(x-110)+'px';bubble.style.top=(y-110)+'px'}else{bubble.style.left='50%';bubble.style.top='50%';}bubble.animate([{transform:'scale(.12)',opacity:1},{transform:'scale(.9)',offset:.35},{transform:'translateY(-200px) scale(2.8)',opacity:0}],{duration:800,easing:'cubic-bezier(.2,.9,.3,1)'});overlay.style.transition='opacity .6s ease';overlay.style.opacity='0';setTimeout(()=>overlay.remove(),750);}
 document.getElementById('goBtn').addEventListener('click',(e)=>{const sel=document.getElementById('botSelect');const url=sel.value;const r=e.target.getBoundingClientRect();dismiss(r.left+r.width/2,r.top+r.height/2);setTimeout(()=>window.location.href=url,500);});
