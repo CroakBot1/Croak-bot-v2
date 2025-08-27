@@ -10,44 +10,58 @@
   --radius:18px; --ease:cubic-bezier(.2,.9,.3,1);
 }
 html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:#e6f7ff}
-body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow:hidden;display:flex;align-items:center;justify-content:center}
+body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow-x:hidden;display:flex;align-items:center;justify-content:center;padding:12px}
 
+/* background fx */
 .bg-blobs{position:fixed;inset:-20%;z-index:0;filter:blur(70px);opacity:.9;pointer-events:none}
 #particles{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:10}
-.card{position:relative;z-index:20;width:min(920px,96%);max-width:980px;padding:26px;border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 30px 80px rgba(2,8,23,0.7);backdrop-filter:blur(8px);display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:center;overflow:visible}
+/* overlay card */
+.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:10;padding:12px}
+.card{position:relative;z-index:20;width:100%;max-width:980px;padding:26px;border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  box-shadow:0 30px 80px rgba(2,8,23,0.7);backdrop-filter:blur(8px);
+  display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:center;overflow:visible}
 
+/* logo */
 .logo-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
-.logo{width:140px;height:140px;border-radius:16px;background:linear-gradient(135deg,#072033,#0d2c40);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:34px;color:var(--accent);box-shadow:inset 0 -12px 30px rgba(0,0,0,0.5);transform-style:preserve-3d;animation:logoFloat 4s ease-in-out infinite}
-@keyframes logoFloat{0%{transform:translateY(0) rotateX(0) rotateY(0)}50%{transform:translateY(-8px) rotateX(6deg) rotateY(6deg)}100%{transform:translateY(0) rotateX(0) rotateY(0)}}
+.logo{width:140px;height:140px;border-radius:16px;background:linear-gradient(135deg,#072033,#0d2c40);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:34px;color:var(--accent);
+  box-shadow:inset 0 -12px 30px rgba(0,0,0,0.5);transform-style:preserve-3d;animation:logoFloat 4s ease-in-out infinite}
+@keyframes logoFloat{0%{transform:translateY(0)}50%{transform:translateY(-8px) rotateX(6deg) rotateY(6deg)}100%{transform:translateY(0)}}
 .orb{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--accent);box-shadow:0 8px 24px rgba(122,252,255,0.15);animation:orbOrbit 3.8s linear infinite}
 @keyframes orbOrbit{0%{transform:translate(-120px,-40px)}50%{transform:translate(120px,40px)}100%{transform:translate(-120px,-40px)}}
 
-.content h1{margin:0;font-size:26px;line-height:1.05}
-.muted{color:rgba(230,247,255,0.75);margin-top:6px}
+/* content */
+.content h1{margin:0;font-size:26px;line-height:1.2}
+.muted{color:rgba(230,247,255,0.75);margin-top:6px;font-size:15px}
 .typing{font-weight:700;color:var(--accent);display:inline-block;white-space:nowrap;overflow:hidden;border-right:2px solid rgba(122,252,255,0.5);animation:blinkCaret 1s step-end infinite}
 @keyframes blinkCaret{50%{border-color:transparent}}
 
-.ticker{margin-top:12px;background:linear-gradient(90deg, rgba(122,252,255,0.03), rgba(122,252,255,0.01));padding:8px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.03)}
-.ticker .marquee{display:inline-block;white-space:nowrap;animation:marquee 16s linear infinite}
+/* ticker */
+.ticker{margin-top:12px;background:linear-gradient(90deg, rgba(122,252,255,0.03), rgba(122,252,255,0.01));
+  padding:8px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.03)}
+.ticker .marquee{display:inline-block;white-space:nowrap;animation:marquee 16s linear infinite;font-size:14px}
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .tick-item{display:inline-flex;gap:10px;align-items:center;padding:0 18px}
 .tick-symbol{font-weight:700;color:var(--accent);min-width:60px}
 
+/* chart */
 .chart{width:100%;height:60px;margin-top:14px;overflow:hidden;position:relative}
 .chart svg{width:100%;height:100%;position:absolute;top:0;left:0}
-.spark path{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;opacity:0.95;transition:d 0.1s linear}
+.spark path{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;opacity:0.95}
 
+/* actions */
 .actions{display:flex;gap:12px;margin-top:16px;align-items:center;flex-wrap:wrap}
-.btn{padding:10px 16px;border-radius:12px;border:0;cursor:pointer;font-weight:700;background:linear-gradient(90deg,var(--accent),#5ee7ff);color:#041822;box-shadow:0 12px 40px rgba(122,252,255,0.12);transform-origin:center;transition:transform .18s ease}
+.btn{padding:10px 16px;border-radius:12px;border:0;cursor:pointer;font-weight:700;background:linear-gradient(90deg,var(--accent),#5ee7ff);color:#041822;
+  box-shadow:0 12px 40px rgba(122,252,255,0.12);transform-origin:center;transition:transform .18s ease}
 .btn:hover{transform:translateY(-4px) scale(1.03)}
 .ghost{background:transparent;color:#dff7ff;border:1px solid rgba(255,255,255,0.06)}
-
-.select-bot{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.3);color:#e6f7ff;font-weight:700;cursor:pointer;transition:0.2s}
+.select-bot{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.3);
+  color:#e6f7ff;font-weight:700;cursor:pointer;transition:0.2s;min-width:120px}
 .select-bot:hover{background:rgba(0,0,0,0.5)}
 
-.bot{display:flex;align-items:center;gap:12px;margin-top:16px}
+/* bot avatar */
+.bot{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap}
 .avatar{width:72px;height:72px;border-radius:14px;background:linear-gradient(135deg,#072033,#0b2b3e);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--accent);box-shadow:0 10px 30px rgba(0,0,0,0.45);animation:avatarBounce 3.2s ease-in-out infinite}
 @keyframes avatarBounce{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
 .wave{width:120px;height:28px;display:block}
@@ -55,14 +69,27 @@ body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow:hidden;di
 .wave path{fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;animation:wave 1.6s linear infinite}
 @keyframes wave{0%{stroke-dashoffset:0}50%{stroke-dashoffset:18}100%{stroke-dashoffset:36}}
 
-@media (max-width:820px){.card{grid-template-columns:1fr;align-items:center}}
+/* responsive */
+@media (max-width:820px){
+  .card{grid-template-columns:1fr;padding:18px}
+  .logo{width:110px;height:110px;font-size:26px}
+  .content h1{font-size:22px}
+}
+@media (max-width:480px){
+  body{padding:8px}
+  .card{padding:16px}
+  .logo{width:90px;height:90px;font-size:22px}
+  .content h1{font-size:20px}
+  .muted{font-size:13px}
+  .btn,.select-bot{flex:1;text-align:center;font-size:14px;padding:9px 12px}
+  .avatar{width:60px;height:60px;font-size:22px}
+}
 </style>
 </head>
 <body>
+<!-- background blobs -->
 <svg class="bg-blobs" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
-  <defs>
-    <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#05263a"/><stop offset="1" stop-color="#071b2b"/></linearGradient>
-  </defs>
+  <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#05263a"/><stop offset="1" stop-color="#071b2b"/></linearGradient></defs>
   <g>
     <ellipse cx="120" cy="80" rx="260" ry="140" fill="#07304a" opacity="0.6"></ellipse>
     <ellipse cx="700" cy="520" rx="300" ry="200" fill="#03405a" opacity="0.5"></ellipse>
@@ -114,7 +141,6 @@ body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow:hidden;di
         </select>
         <button class="btn" id="goBtn">Go</button>
         <button class="btn ghost" id="demoBtn">View Demo</button>
-        <!-- Telegram Link Button -->
         <a href="https://t.me/QuantumTradingBot1" target="_blank" class="btn">Join Telegram</a>
       </div>
     </div>
@@ -122,7 +148,7 @@ body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow:hidden;di
 </div>
 
 <script>
-// --- particles ---
+// particles
 const canvas=document.getElementById('particles'),ctx=canvas.getContext('2d');let w,h,particles=[];
 function resize(){w=canvas.width=innerWidth;h=canvas.height=innerHeight}
 window.addEventListener('resize',resize); resize();
@@ -131,19 +157,19 @@ function initParticles(){particles=[];for(let i=0;i<70;i++){particles.push({x:rn
 function draw(){ctx.clearRect(0,0,w,h);for(let p of particles){ctx.beginPath();ctx.fillStyle='rgba(122,252,255,'+p.alpha+')';ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<-50)p.x=w+50;if(p.x>w+50)p.x=-50;if(p.y<-50)p.y=h+50;if(p.y>h+50)p.y=-50}requestAnimationFrame(draw)}
 initParticles();draw();
 
-// --- typing ---
+// typing effect
 const typingEl=document.getElementById('typing');const phrases=['Adaptive market signals','Autonomous scalping engine','Risk-managed entries','Quantum-aware strategies'];let i=0,j=0,forward=true;
 function typeStep(){const cur=phrases[i];if(forward){j++;typingEl.textContent=cur.slice(0,j);if(j===cur.length){forward=false;setTimeout(typeStep,900);return}}else{j--;typingEl.textContent=cur.slice(0,j);if(j===0){forward=true;i=(i+1)%phrases.length}}setTimeout(typeStep,forward?90:40)}
 typeStep();
 
-// --- bubble dismiss + buttons ---
+// bubble dismiss + buttons
 const overlay=document.querySelector('.overlay');const bubble=document.createElement('div');bubble.style.position='fixed';bubble.style.width='220px';bubble.style.height='220px';bubble.style.borderRadius='50%';bubble.style.pointerEvents='none';bubble.style.zIndex='18';bubble.style.background='radial-gradient(circle at 35% 30%, rgba(122,252,255,0.95), rgba(122,252,255,0.18) 40%, transparent 70%)';bubble.style.filter='blur(6px)';document.body.appendChild(bubble);
 function dismiss(x=null,y=null){if(x&&y){bubble.style.left=(x-110)+'px';bubble.style.top=(y-110)+'px'}else{bubble.style.left='50%';bubble.style.top='50%';}bubble.animate([{transform:'scale(.12)',opacity:1},{transform:'scale(.9)',offset:.35},{transform:'translateY(-200px) scale(2.8)',opacity:0}],{duration:800,easing:'cubic-bezier(.2,.9,.3,1)'});overlay.style.transition='opacity .6s ease';overlay.style.opacity='0';setTimeout(()=>overlay.remove(),750);}
 document.getElementById('goBtn').addEventListener('click',(e)=>{const sel=document.getElementById('botSelect');const url=sel.value;const r=e.target.getBoundingClientRect();dismiss(r.left+r.width/2,r.top+r.height/2);setTimeout(()=>window.location.href=url,500);});
 document.getElementById('demoBtn').addEventListener('click',()=>{alert('Demo opened — replace with your demo handler')});
 window.addEventListener('keydown',(e)=>{if(e.key==='Escape'&&document.querySelector('.overlay')){dismiss()}});
 
-// --- live flowing chart ---
+// live chart
 const coins=['bitcoin','ethereum','solana','dogecoin','cardano'],maxPoints=60;
 const marquee=document.getElementById('marquee');
 const pathEls={btc:document.getElementById('btc'),eth:document.getElementById('eth'),sol:document.getElementById('sol'),doge:document.getElementById('doge'),ada:document.getElementById('ada')};
