@@ -15,9 +15,6 @@ body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow:hidden;di
 .bg-blobs{position:fixed;inset:-20%;z-index:0;filter:blur(70px);opacity:.9;pointer-events:none}
 #particles{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-/* NEW quantum canvas styling */
-#quantum-calc{position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen}
-
 .overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:10}
 .card{position:relative;z-index:20;width:min(920px,96%);max-width:980px;padding:26px;border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 30px 80px rgba(2,8,23,0.7);backdrop-filter:blur(8px);display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:center;overflow:visible}
 
@@ -71,11 +68,7 @@ body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow:hidden;di
     <ellipse cx="700" cy="520" rx="300" ry="200" fill="#03405a" opacity="0.5"></ellipse>
   </g>
 </svg>
-
-<!-- existing particles canvas -->
 <canvas id="particles"></canvas>
-<!-- NEW quantum canvas (floating equations & nodes) -->
-<canvas id="quantum-calc"></canvas>
 
 <div class="overlay">
   <div class="card">
@@ -129,15 +122,9 @@ body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow:hidden;di
 </div>
 
 <script>
-// --- particles (unchanged behavior) ---
-const canvas=document.getElementById('particles'),ctx=canvas.getContext('2d');
-let w,h,particles=[];
-function resize(){ 
-  w=canvas.width=innerWidth;
-  h=canvas.height=innerHeight;
-  // sync quantum canvas size too (defined below)
-  if(typeof qCanvas !== 'undefined' && qCanvas){ qCanvas.width = innerWidth; qCanvas.height = innerHeight; qW = qCanvas.width; qH = qCanvas.height; }
-}
+// --- particles ---
+const canvas=document.getElementById('particles'),ctx=canvas.getContext('2d');let w,h,particles=[];
+function resize(){w=canvas.width=innerWidth;h=canvas.height=innerHeight}
 window.addEventListener('resize',resize); resize();
 function rnd(min,max){return Math.random()*(max-min)+min}
 function initParticles(){particles=[];for(let i=0;i<70;i++){particles.push({x:rnd(0,w),y:rnd(0,h),r:rnd(0.6,2.4),vx:rnd(-0.2,0.2),vy:rnd(-0.1,0.1),alpha:rnd(0.05,0.18)})}}
@@ -156,7 +143,7 @@ document.getElementById('goBtn').addEventListener('click',(e)=>{const sel=docume
 document.getElementById('demoBtn').addEventListener('click',()=>{alert('Demo opened — replace with your demo handler')});
 window.addEventListener('keydown',(e)=>{if(e.key==='Escape'&&document.querySelector('.overlay')){dismiss()}});
 
-// --- live flowing chart (unchanged) ---
+// --- live flowing chart ---
 const coins=['bitcoin','ethereum','solana','dogecoin','cardano'],maxPoints=60;
 const marquee=document.getElementById('marquee');
 const pathEls={btc:document.getElementById('btc'),eth:document.getElementById('eth'),sol:document.getElementById('sol'),doge:document.getElementById('doge'),ada:document.getElementById('ada')};
@@ -192,132 +179,6 @@ async function fetchPrices(){
   }catch(e){console.error(e)}
 }
 fetchPrices(); setInterval(fetchPrices,3000);
-
-// --- QUANTUM CALCULATIONS BACKGROUND (NEW) ---
-const qCanvas = document.getElementById('quantum-calc');
-const qCtx = qCanvas.getContext('2d');
-let qW = qCanvas.width = innerWidth;
-let qH = qCanvas.height = innerHeight;
-
-// ensure the main resize also updates quantum canvas (resize function above calls this block)
-qCanvas.width = innerWidth; qCanvas.height = innerHeight; qW = qCanvas.width; qH = qCanvas.height;
-
-const expressions = [
-  "ψ(x,t)","ħ","E=mc²","∑_{n=1}^∞","∫₀^∞","√","α","β","γ","Δ","λ",
-  "iħ∂/∂t","Hψ=Eψ","|0⟩","⟨φ|ψ⟩","σ_x","σ_y","σ_z","〈x〉","Var(x)",
-  "0.101101","1011 0101","ε(k)","Ω","∇·E=ρ/ε₀","∇×B=μ₀J+μ₀ε₀∂E/∂t"
-];
-
-let qNodes = [];
-function initQuantum(){
-  qNodes = [];
-  const count = Math.floor(Math.max(24, Math.min(80, (qW*qH)/70000)));
-  for(let i=0;i<count;i++){
-    const txt = expressions[Math.floor(Math.random()*expressions.length)];
-    qNodes.push({
-      x: Math.random()*qW,
-      y: Math.random()*qH,
-      vx: (Math.random()-0.5)*0.45,
-      vy: (Math.random()*-0.25)-0.05, // mostly floating upward
-      alpha: Math.random()*0.6+0.15,
-      size: Math.random()*14+8,
-      text: txt,
-      wobble: Math.random()*0.02+0.01,
-      angle: (Math.random()-0.5)*0.4
-    });
-  }
-}
-function drawQuantum(){
-  qCtx.clearRect(0,0,qW,qH);
-
-  // subtle background glow gradient
-  const g = qCtx.createRadialGradient(qW*0.2, qH*0.1, 50, qW*0.2, qH*0.1, Math.max(qW,qH));
-  g.addColorStop(0,'rgba(10,30,50,0.08)');
-  g.addColorStop(1,'rgba(5,10,18,0)');
-  qCtx.fillStyle = g;
-  qCtx.fillRect(0,0,qW,qH);
-
-  // draw connections for nearby nodes
-  for(let i=0;i<qNodes.length;i++){
-    const a = qNodes[i];
-    for(let j=i+1;j<qNodes.length;j++){
-      const b = qNodes[j];
-      const dx = a.x - b.x, dy = a.y - b.y;
-      const dist = Math.sqrt(dx*dx+dy*dy);
-      if(dist < 140){
-        const lineAlpha = (1 - dist/140) * 0.12 * a.alpha;
-        qCtx.strokeStyle = `rgba(122,252,255,${lineAlpha})`;
-        qCtx.lineWidth = 0.9;
-        qCtx.beginPath();
-        qCtx.moveTo(a.x,a.y);
-        qCtx.lineTo(b.x,b.y);
-        qCtx.stroke();
-      }
-    }
-  }
-
-  // draw nodes (text)
-  for(let n of qNodes){
-    qCtx.save();
-    qCtx.translate(n.x, n.y);
-    n.angle += (Math.random()-0.5)*0.02;
-    qCtx.rotate(Math.sin(n.angle)*0.05);
-    qCtx.globalAlpha = Math.max(0, Math.min(1, n.alpha));
-    qCtx.font = `${Math.round(n.size)}px Inter, system-ui, Arial`;
-    qCtx.textAlign = 'center';
-    qCtx.textBaseline = 'middle';
-
-    // glow
-    qCtx.shadowBlur = Math.max(6, n.size/2);
-    qCtx.shadowColor = 'rgba(122,252,255,0.9)';
-
-    // fill + faint stroke for readability
-    qCtx.fillStyle = `rgba(190,255,255,${0.95 * n.alpha})`;
-    qCtx.fillText(n.text, 0, 0);
-
-    qCtx.shadowBlur = 0;
-    qCtx.lineWidth = 0.6;
-    qCtx.strokeStyle = `rgba(10,20,30,${0.12 * n.alpha})`;
-    qCtx.strokeText(n.text, 0, 0);
-
-    qCtx.restore();
-
-    // motion
-    n.x += n.vx + Math.sin(performance.now()*n.wobble + n.size)*0.08;
-    n.y += n.vy;
-    if(n.x < -60) n.x = qW + 60;
-    if(n.x > qW + 60) n.x = -60;
-    if(n.y < -80) { n.y = qH + 40; n.x = Math.random()*qW; }
-    // slowly vary alpha to give breathing glow
-    n.alpha += (Math.random()-0.5)*0.02;
-    n.alpha = Math.max(0.08, Math.min(0.95, n.alpha));
-  }
-
-  // subtle central matrix-like vertical streams (tiny numbers)
-  qCtx.save();
-  qCtx.globalAlpha = 0.06;
-  qCtx.font = "10px monospace";
-  for(let c=0;c<Math.floor(qW/80);c++){
-    let cx = c*80 + (performance.now()/70 % 80);
-    for(let s=0;s<10;s++){
-      const sy = (performance.now()/6 + s*34 + c*13) % qH;
-      const num = Math.floor(Math.random()*10);
-      qCtx.fillText(num, cx, sy);
-    }
-  }
-  qCtx.restore();
-
-  requestAnimationFrame(drawQuantum);
-}
-initQuantum();
-drawQuantum();
-window.addEventListener('resize', () => {
-  qCanvas.width = innerWidth; qCanvas.height = innerHeight; qW = qCanvas.width; qH = qCanvas.height;
-  initQuantum();
-});
-
-// optional: regenerate nodes occasionally for variety
-setInterval(()=>{ initQuantum(); }, 14000);
 </script>
 </body>
 </html>
