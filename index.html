@@ -9,8 +9,28 @@
   --bg1:#041027; --bg2:#071021; --accent:#7afcff; --accent-2:#6de6ff; --card:#0f1b2b; --glass:rgba(255,255,255,0.03);
   --radius:18px; --ease:cubic-bezier(.2,.9,.3,1);
 }
+/* base */
 html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:#e6f7ff}
 body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow:hidden;display:flex;align-items:center;justify-content:center;padding:0}
+
+/* ---------- SITE SCALE WRAPPER (applies zoom on desktop) ---------- */
+.site-scale{
+  width:100%;
+  height:100%;
+  display:block;
+  transform-origin:center top; /* center the scale horizontally, anchor at top to avoid weird vertical shift */
+  transition:transform .22s var(--ease);
+  will-change:transform;
+}
+
+/* Desktop zoom breakpoints */
+@media (min-width:1000px){
+  .site-scale{ transform: scale(1.12); } /* main desktop zoom */
+}
+/* larger desktops */
+@media (min-width:1400px){
+  .site-scale{ transform: scale(1.20); }
+}
 
 /* background fx */
 .bg-blobs{position:fixed;inset:-20%;z-index:0;filter:blur(70px);opacity:.9;pointer-events:none}
@@ -28,7 +48,7 @@ body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow:hidden;di
   display:flex;align-items:center;justify-content:center;font-weight:800;font-size:34px;color:var(--accent);
   box-shadow:inset 0 -12px 30px rgba(0,0,0,0.5);transform-style:preserve-3d;animation:logoFloat 4s ease-in-out infinite}
 @keyframes logoFloat{0%{transform:translateY(0)}50%{transform:translateY(-8px) rotateX(6deg) rotateY(6deg)}100%{transform:translateY(0)}}
-.orb{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--accent);box-shadow:0 8px 24px rgba(122,252,255,0.15);animation:orbOrbit 3.8s linear infinite}
+.orb{position:absolute;width:18px;height:18px;border-radius:50%;Background:var(--accent);box-shadow:0 8px 24px rgba(122,252,255,0.15);animation:orbOrbit 3.8s linear infinite}
 @keyframes orbOrbit{0%{transform:translate(-120px,-40px)}50%{transform:translate(120px,40px)}100%{transform:translate(-120px,-40px)}}
 
 /* content */
@@ -86,64 +106,67 @@ body{background:linear-gradient(120deg,var(--bg1),var(--bg2));overflow:hidden;di
 </style>
 </head>
 <body>
-<!-- background blobs -->
-<svg class="bg-blobs" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
-  <g>
-    <ellipse cx="120" cy="80" rx="260" ry="140" fill="#07304a" opacity="0.6"></ellipse>
-    <ellipse cx="700" cy="520" rx="300" ry="200" fill="#03405a" opacity="0.5"></ellipse>
-  </g>
-</svg>
-<canvas id="particles"></canvas>
+  <!-- WRAP EVERYTHING that should scale -->
+  <div class="site-scale">
+    <!-- background blobs -->
+    <svg class="bg-blobs" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+      <g>
+        <ellipse cx="120" cy="80" rx="260" ry="140" fill="#07304a" opacity="0.6"></ellipse>
+        <ellipse cx="700" cy="520" rx="300" ry="200" fill="#03405a" opacity="0.5"></ellipse>
+      </g>
+    </svg>
+    <canvas id="particles"></canvas>
 
-<div class="overlay">
-  <div class="card">
-    <div class="logo-wrap">
-      <div class="logo">QT</div>
-      <div style="font-size:13px;color:rgba(230,247,255,0.7)">Quantum Trading Bot</div>
-      <div class="orb" style="left:42px;top:26px"></div>
-    </div>
-    <div class="content">
-      <h1><span class="typing" id="typing">Adaptive market signals</span></h1>
-      <div class="muted">Prepare strategies backed by AI-driven insights — live flowing preview</div>
+    <div class="overlay">
+      <div class="card">
+        <div class="logo-wrap">
+          <div class="logo">QT</div>
+          <div style="font-size:13px;color:rgba(230,247,255,0.7)">Quantum Trading Bot</div>
+          <div class="orb" style="left:42px;top:26px"></div>
+        </div>
+        <div class="content">
+          <h1><span class="typing" id="typing">Adaptive market signals</span></h1>
+          <div class="muted">Prepare strategies backed by AI-driven insights — live flowing preview</div>
 
-      <div class="ticker" aria-hidden="true"><div class="marquee" id="marquee"></div></div>
+          <div class="ticker" aria-hidden="true"><div class="marquee" id="marquee"></div></div>
 
-      <div class="chart" aria-hidden="true">
-        <svg viewBox="0 0 400 60" preserveAspectRatio="none" class="spark">
-          <path id="btc" stroke="#f7931a"/>
-          <path id="eth" stroke="#627eea"/>
-          <path id="sol" stroke="#00ffa3"/>
-          <path id="doge" stroke="#c2a633"/>
-          <path id="ada" stroke="#3cc8c8"/>
-        </svg>
-      </div>
-
-      <div class="bot">
-        <div class="avatar">🤖</div>
-        <div>
-          <div style="font-weight:700">Croakus AI</div>
-          <div style="font-size:13px;color:rgba(230,247,255,0.7)">Realtime market signals</div>
-          <div class="wave" aria-hidden="true">
-            <svg viewBox="0 0 120 28" preserveAspectRatio="none">
-              <path d="M0 18 Q20 6 40 14 T120 12" stroke="rgba(122,252,255,0.9)" stroke-width="2" stroke-linecap="round" fill="none" stroke-dasharray="6 6"></path>
+          <div class="chart" aria-hidden="true">
+            <svg viewBox="0 0 400 60" preserveAspectRatio="none" class="spark">
+              <path id="btc" stroke="#f7931a"/>
+              <path id="eth" stroke="#627eea"/>
+              <path id="sol" stroke="#00ffa3"/>
+              <path id="doge" stroke="#c2a633"/>
+              <path id="ada" stroke="#3cc8c8"/>
             </svg>
+          </div>
+
+          <div class="bot">
+            <div class="avatar">🤖</div>
+            <div>
+              <div style="font-weight:700">Croakus AI</div>
+              <div style="font-size:13px;color:rgba(230,247,255,0.7)">Realtime market signals</div>
+              <div class="wave" aria-hidden="true">
+                <svg viewBox="0 0 120 28" preserveAspectRatio="none">
+                  <path d="M0 18 Q20 6 40 14 T120 12" stroke="rgba(122,252,255,0.9)" stroke-width="2" stroke-linecap="round" fill="none" stroke-dasharray="6 6"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <select id="botSelect" class="select-bot">
+              <option value="https://croak-bot-proxy-three.vercel.app/">Bot 1</option>
+              <option value="https://croak-express-gateway-henna.vercel.app/">Bot 2</option>
+              <option value="https://croak-pwa.vercel.app/">Bot 3</option>
+            </select>
+            <button class="btn" id="goBtn">Go</button>
+            <button class="btn ghost" id="demoBtn">View Demo</button>
+            <a href="https://t.me/QuantumTradingBot1" target="_blank" class="btn">Join Telegram</a>
           </div>
         </div>
       </div>
-
-      <div class="actions">
-        <select id="botSelect" class="select-bot">
-          <option value="https://croak-bot-proxy-three.vercel.app/">Bot 1</option>
-          <option value="https://croak-express-gateway-henna.vercel.app/">Bot 2</option>
-          <option value="https://croak-pwa.vercel.app/">Bot 3</option>
-        </select>
-        <button class="btn" id="goBtn">Go</button>
-        <button class="btn ghost" id="demoBtn">View Demo</button>
-        <a href="https://t.me/QuantumTradingBot1" target="_blank" class="btn">Join Telegram</a>
-      </div>
     </div>
-  </div>
-</div>
+  </div> <!-- end site-scale -->
 
 <script>
 // particles
