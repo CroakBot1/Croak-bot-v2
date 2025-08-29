@@ -158,6 +158,8 @@ canvas {image-rendering: -webkit-optimize-contrast;}
         <button class="btn" id="goBtn">Go</button>
         <button class="btn ghost" id="demoBtn">View Demo</button>
         <a href="https://t.me/QuantumTradingBot1" target="_blank" class="btn">Join Telegram</a>
+        <!-- NEW Guidelines button -->
+        <a href="https://croakbotpage.vercel.app/" target="_blank" class="btn">Guidelines</a>
       </div>
     </div>
   </div>
@@ -185,7 +187,7 @@ function initParticles(){
       orbitR: rnd(6,22),
       orbitSpeed: rnd(0.01,0.045),
       orbitAngle: rnd(0,Math.PI*2),
-      charge: rnd(-1,1) // used for subtle color tint
+      charge: rnd(-1,1)
     });
   }
 }
@@ -197,26 +199,23 @@ function draw(now){
   lastTime = now;
   ctx.clearRect(0,0,innerWidth,innerHeight);
 
-  // subtle background radial vignette for depth
   const grd = ctx.createRadialGradient(innerWidth*0.3, innerHeight*0.2, innerWidth*0.05, innerWidth*0.5, innerHeight*0.5, Math.max(innerWidth,innerHeight));
   grd.addColorStop(0, 'rgba(10,20,30,0.05)');
   grd.addColorStop(1, 'rgba(2,6,12,0.2)');
   ctx.fillStyle = grd;
   ctx.fillRect(0,0,innerWidth,innerHeight);
 
-  // draw soft connecting lines (quantum web)
   ctx.save();
-  ctx.globalCompositeOperation = 'lighter'; // additive glow
+  ctx.globalCompositeOperation = 'lighter';
   for(let i=0;i<particles.length;i++){
     const p = particles[i];
     for(let j=i+1;j<particles.length;j++){
       const q = particles[j];
       const dx = p.x - q.x, dy = p.y - q.y;
       const dist = Math.sqrt(dx*dx + dy*dy);
-      const thresh = 140; // connection threshold
+      const thresh = 140;
       if(dist < thresh){
         const alpha = (1 - (dist / thresh)) * 0.08 + (p.alpha+q.alpha)/50;
-        // color blend between accent and accent-2 based on charges
         const mix = (p.charge + q.charge) * 0.5;
         const r = Math.floor(122 + mix*60);
         const g = Math.floor(252 - Math.abs(mix)*120);
@@ -232,31 +231,25 @@ function draw(now){
   }
   ctx.restore();
 
-  // draw particles + orbiting electrons
   ctx.save();
   ctx.globalCompositeOperation = 'lighter';
   for(let p of particles){
-    // update
     p.x += p.vx * (dt/16);
     p.y += p.vy * (dt/16);
-    // wrap
     if(p.x < -60) p.x = innerWidth + 60;
     if(p.x > innerWidth + 60) p.x = -60;
     if(p.y < -60) p.y = innerHeight + 60;
     if(p.y > innerHeight + 60) p.y = -60;
 
-    // slight drift influenced by simple noise (cheap)
     p.vx += (Math.sin((now/4000)+p.x*0.0007) * 0.01);
     p.vy += (Math.cos((now/5000)+p.y*0.0005) * 0.006);
 
-    // particle core
     const coreR = Math.max(0.6, p.r);
     ctx.beginPath();
     ctx.fillStyle = `rgba(122,252,255,${p.alpha*0.9})`;
     ctx.arc(p.x, p.y, coreR*1.6, 0, Math.PI*2);
     ctx.fill();
 
-    // inner glow
     const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, coreR*8);
     g.addColorStop(0, `rgba(122,252,255,${p.alpha*0.6})`);
     g.addColorStop(1, 'rgba(122,252,255,0)');
@@ -265,7 +258,6 @@ function draw(now){
     ctx.arc(p.x, p.y, coreR*8, 0, Math.PI*2);
     ctx.fill();
 
-    // orbiting "electron"
     p.orbitAngle += p.orbitSpeed * (dt/16);
     const ex = p.x + Math.cos(p.orbitAngle) * p.orbitR;
     const ey = p.y + Math.sin(p.orbitAngle) * p.orbitR;
@@ -274,7 +266,6 @@ function draw(now){
     ctx.arc(ex, ey, Math.max(0.9, coreR*0.6), 0, Math.PI*2);
     ctx.fill();
 
-    // subtle trail behind electron
     ctx.beginPath();
     ctx.strokeStyle = `rgba(110,230,255,${Math.min(0.08, p.alpha*0.2)})`;
     ctx.lineWidth = 1;
@@ -288,26 +279,25 @@ function draw(now){
 }
 requestAnimationFrame(draw);
 
-// gentle re-init on resize to adapt particle count
 let resizeTimer;
 window.addEventListener('resize', ()=>{
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(()=>{ initParticles(); }, 180);
 });
 
-// --- typing (unchanged) ---
+// --- typing ---
 const typingEl=document.getElementById('typing');const phrases=['Adaptive market signals','Autonomous scalping engine','Risk-managed entries','Quantum-aware strategies'];let i=0,j=0,forward=true;
 function typeStep(){const cur=phrases[i];if(forward){j++;typingEl.textContent=cur.slice(0,j);if(j===cur.length){forward=false;setTimeout(typeStep,900);return}}else{j--;typingEl.textContent=cur.slice(0,j);if(j===0){forward=true;i=(i+1)%phrases.length}}setTimeout(typeStep,forward?90:40)}
 typeStep();
 
-// --- bubble dismiss + buttons (unchanged) ---
+// --- bubble dismiss + buttons ---
 const overlay=document.querySelector('.overlay');const bubble=document.createElement('div');bubble.style.position='fixed';bubble.style.width='220px';bubble.style.height='220px';bubble.style.borderRadius='50%';bubble.style.pointerEvents='none';bubble.style.zIndex='18';bubble.style.background='radial-gradient(circle at 35% 30%, rgba(122,252,255,0.95), rgba(122,252,255,0.18) 40%, transparent 70%)';bubble.style.filter='blur(6px)';document.body.appendChild(bubble);
 function dismiss(x=null,y=null){if(x&&y){bubble.style.left=(x-110)+'px';bubble.style.top=(y-110)+'px'}else{bubble.style.left='50%';bubble.style.top='50%';}bubble.animate([{transform:'scale(.12)',opacity:1},{transform:'scale(.9)',offset:.35},{transform:'translateY(-200px) scale(2.8)',opacity:0}],{duration:800,easing:'cubic-bezier(.2,.9,.3,1)'});overlay.style.transition='opacity .6s ease';overlay.style.opacity='0';setTimeout(()=>overlay.remove(),750);}
 document.getElementById('goBtn').addEventListener('click',(e)=>{const sel=document.getElementById('botSelect');const url=sel.value;const r=e.target.getBoundingClientRect();dismiss(r.left+r.width/2,r.top+r.height/2);setTimeout(()=>window.location.href=url,500);});
 document.getElementById('demoBtn').addEventListener('click',()=>{alert('Demo opened — replace with your demo handler')});
 window.addEventListener('keydown',(e)=>{if(e.key==='Escape'&&document.querySelector('.overlay')){dismiss()}});
 
-// --- live flowing chart (unchanged) ---
+// --- live flowing chart ---
 const coins=['bitcoin','ethereum','solana','dogecoin','cardano'],maxPoints=60;
 const marquee=document.getElementById('marquee');
 const pathEls={btc:document.getElementById('btc'),eth:document.getElementById('eth'),sol:document.getElementById('sol'),doge:document.getElementById('doge'),ada:document.getElementById('ada')};
