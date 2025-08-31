@@ -336,32 +336,3 @@ fetchPrices(); setInterval(fetchPrices,3000);
 </script>
 </body>
 </html>
-<!-- Add-on Script: Centered About Us Button (Higher Still) -->
-<script>
-  // Create the button element
-  const aboutBtn = document.createElement('button');
-  aboutBtn.textContent = 'About Us';
-  aboutBtn.style.cssText = `
-    position: fixed;
-    bottom: 180px; /* mas saka pa gikan sa 140px */
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 12px 20px;
-    background: linear-gradient(90deg, #7afcff, #6de6ff);
-    border: none;
-    border-radius: 8px;
-    color: #041027;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    z-index: 9999;
-  `;
-
-  // Add click handler to open the URL in a new tab
-  aboutBtn.addEventListener('click', () => {
-    window.open('https://about-us-green.vercel.app/', '_blank');
-  });
-
-  // Append button to the body
-  document.body.appendChild(aboutBtn);
-</script>
