@@ -575,3 +575,26 @@ animateFleet();
   wrap.insertBefore(svg, wrap.firstChild);
 })();
 </script>
+<!-- Add-on Script: Auto Zoom on PC -->
+<script>
+(function() {
+  function applyZoom() {
+    if (window.innerWidth > 1024) { 
+      // kung PC or large screen
+      document.body.style.zoom = "1.2";   // 120% zoom
+      document.body.style.transform = "scale(1.2)";
+      document.body.style.transformOrigin = "top center";
+    } else {
+      // kung mobile/tablet, normal lang
+      document.body.style.zoom = "1";
+      document.body.style.transform = "none";
+    }
+  }
+
+  // initial load
+  applyZoom();
+
+  // listen if resized
+  window.addEventListener("resize", applyZoom);
+})();
+</script>
