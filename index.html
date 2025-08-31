@@ -336,35 +336,49 @@ fetchPrices(); setInterval(fetchPrices,3000);
 </script>
 </body>
 </html>
-<!-- Add-on Script: Centered About Us Button (Even Higher) -->
+<!-- Add-on Script: Floating About Us Button (Always on Top) -->
 <script>
-  // Create the button element
-  const aboutBtn = document.createElement('button');
-  aboutBtn.textContent = 'About Us';
-  aboutBtn.style.cssText = `
-    position: fixed;
-    bottom: 220px; /* mas saka pa gikan sa 180px */
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 12px 20px;
-    background: linear-gradient(90deg, #7afcff, #6de6ff);
-    border: none;
-    border-radius: 8px;
-    color: #041027;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    z-index: 9999;
-  `;
+  (function(){
+    const aboutBtn = document.createElement('button');
+    aboutBtn.textContent = 'About Us';
+    aboutBtn.style.cssText = `
+      position: fixed;
+      bottom: 220px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 22px;
+      background: linear-gradient(90deg, #7afcff, #6de6ff);
+      border: none;
+      border-radius: 12px;
+      color: #041027;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+      transition: all 0.25s ease;
+      z-index: 99999; /* pinakataas */
+    `;
 
-  // Add click handler to open the URL in a new tab
-  aboutBtn.addEventListener('click', () => {
-    window.open('https://about-us-green.vercel.app/', '_blank');
-  });
+    // Hover animation
+    aboutBtn.addEventListener('mouseover', () => {
+      aboutBtn.style.transform = 'translateX(-50%) scale(1.08)';
+      aboutBtn.style.boxShadow = '0 10px 20px rgba(0,0,0,0.35)';
+    });
+    aboutBtn.addEventListener('mouseout', () => {
+      aboutBtn.style.transform = 'translateX(-50%) scale(1)';
+      aboutBtn.style.boxShadow = '0 6px 14px rgba(0,0,0,0.25)';
+    });
 
-  // Append button to the body
-  document.body.appendChild(aboutBtn);
+    // Click event → open About Us page
+    aboutBtn.addEventListener('click', () => {
+      window.open('https://about-us-green.vercel.app/', '_blank');
+    });
+
+    // Append to body
+    document.body.appendChild(aboutBtn);
+  })();
 </script>
+
 <!-- Add-on Script: Ultra-Realistic Alien Fleet with Dynamic Lighting -->
 <script>
 const shipCanvas = document.createElement('canvas');
