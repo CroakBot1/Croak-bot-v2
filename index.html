@@ -336,14 +336,14 @@ fetchPrices(); setInterval(fetchPrices,3000);
 </script>
 </body>
 </html>
-<!-- Add-on Script: Floating About Us Button (Always on Top) -->
+<!-- Add-on Script: Floating About Us Button (Always on Top Header) -->
 <script>
   (function(){
     const aboutBtn = document.createElement('button');
     aboutBtn.textContent = 'About Us';
     aboutBtn.style.cssText = `
       position: fixed;
-      bottom: 220px;
+      top: 20px; /* ibutang sa taas */
       left: 50%;
       transform: translateX(-50%);
       padding: 12px 22px;
@@ -356,7 +356,7 @@ fetchPrices(); setInterval(fetchPrices,3000);
       cursor: pointer;
       box-shadow: 0 6px 14px rgba(0,0,0,0.25);
       transition: all 0.25s ease;
-      z-index: 99999; /* pinakataas */
+      z-index: 99999; /* pinakataas gyud */
     `;
 
     // Hover animation
