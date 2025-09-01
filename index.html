@@ -612,3 +612,107 @@ animateFleet();
   window.addEventListener("resize", applyZoom);
 })();
 </script>
+<!-- Add-on Script: Realistic Atomic Bomb Explosion Background (Random Areas) -->
+<script>
+(function(){
+  const expCanvas = document.createElement("canvas");
+  expCanvas.style.position = "fixed";
+  expCanvas.style.inset = "0";
+  expCanvas.style.zIndex = "-1";
+  expCanvas.style.background = "radial-gradient(ellipse at center, #111 0%, #000 100%)"; 
+  document.body.appendChild(expCanvas);
+
+  const ctx = expCanvas.getContext("2d");
+  let w = window.innerWidth, h = window.innerHeight;
+  expCanvas.width = w; expCanvas.height = h;
+
+  window.addEventListener("resize", ()=>{
+    w = window.innerWidth; h = window.innerHeight;
+    expCanvas.width = w; expCanvas.height = h;
+  });
+
+  // Particle system for mushroom cloud
+  class Particle {
+    constructor(x,y,r,clr,vx,vy,life){
+      this.x=x; this.y=y;
+      this.r=r;
+      this.clr=clr;
+      this.vx=vx; this.vy=vy;
+      this.life=life;
+      this.opacity=1;
+    }
+    update(){
+      this.x+=this.vx;
+      this.y+=this.vy;
+      this.vx*=0.98;
+      this.vy*=0.98;
+      this.r*=0.99;
+      this.life--;
+      this.opacity=this.life/200;
+    }
+    draw(){
+      const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.r);
+      g.addColorStop(0,`rgba(${this.clr},${this.opacity})`);
+      g.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.fillStyle=g;
+      ctx.beginPath();
+      ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+      ctx.fill();
+    }
+  }
+
+  let particles=[];
+  function createExplosion(){
+    // RANDOM location on screen
+    const baseX = Math.random()*w*0.8 + w*0.1; 
+    const baseY = Math.random()*h*0.5 + h*0.4; 
+
+    // fireball core
+    for(let i=0;i<100;i++){
+      particles.push(new Particle(
+        baseX+(Math.random()-0.5)*30,
+        baseY+(Math.random()-0.5)*30,
+        80+Math.random()*80,
+        "255,140,60",
+        (Math.random()-0.5)*4,
+        (Math.random()-0.5)*2,
+        250+Math.random()*50
+      ));
+    }
+    // mushroom stem & smoke cloud
+    for(let i=0;i<350;i++){
+      const angle=Math.random()*Math.PI*2;
+      const speed=Math.random()*2;
+      particles.push(new Particle(
+        baseX+Math.cos(angle)*15,
+        baseY-60-Math.random()*70,
+        25+Math.random()*50,
+        "220,220,220",
+        Math.cos(angle)*speed,
+        -Math.random()*2-1,
+        400+Math.random()*200
+      ));
+    }
+  }
+
+  // first explosion
+  createExplosion();
+
+  function animate(){
+    // dark sky background fade
+    ctx.fillStyle="rgba(10,10,20,0.4)";
+    ctx.fillRect(0,0,w,h);
+
+    particles.forEach((p,i)=>{
+      p.update(); 
+      p.draw();
+      if(p.life<=0) particles.splice(i,1);
+    });
+
+    // random new explosion when particles < threshold
+    if(particles.length < 150) createExplosion(); 
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+</script>
