@@ -1204,3 +1204,26 @@ LaserBG.init({
    LaserBG.setOptions({ laserFrequency: 1.5, maxConcurrentLasers: 5 });
 */
 </script>
+<!-- Access Now button -->
+<a href="https://quantum-payment.vercel.app/" target="_blank" id="accessBtn">Access Now</a>
+
+<style>
+#accessBtn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 22px;
+  background: linear-gradient(90deg, #7afcff, #6de6ff);
+  color: #041822;
+  font-weight: 700;
+  border-radius: 16px;
+  text-decoration: none;
+  z-index: 999;
+  box-shadow: 0 8px 24px rgba(122,252,255,0.3);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+#accessBtn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 40px rgba(122,252,255,0.4);
+}
+</style>
