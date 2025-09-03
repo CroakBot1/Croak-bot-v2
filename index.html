@@ -1210,21 +1210,21 @@ LaserBG.init({
 <style>
 #accessBtn {
   position: fixed;
-  top: 16px;
-  right: 6px;               /* lapit kaayo sa kilid */
-  padding: 8px 14px;
+  top: 6px;                  /* very top */
+  right: 16px;               /* spacing from right edge */
+  padding: 8px 16px;
   background: linear-gradient(90deg, #7afcff, #6de6ff);
   color: #041822;
   font-weight: 700;
   font-size: 14px;
   border-radius: 12px;
   text-decoration: none;
-  z-index: 999;
+  z-index: 9999;             /* ensure it stays above everything */
   box-shadow: 0 6px 20px rgba(122,252,255,0.3);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 #accessBtn:hover {
-  transform: translateY(-2px) scale(1.04);
+  transform: translateY(-2px) scale(1.05);
   box-shadow: 0 10px 32px rgba(122,252,255,0.4);
 }
 </style>
