@@ -1210,13 +1210,14 @@ LaserBG.init({
 <style>
 #accessBtn {
   position: fixed;
-  top: 6px;                  /* almost at the top */
-  right: 80px;               /* pushed a bit left from the corner */
-  padding: 8px 16px;
+  top: 50%;                 /* vertical center */
+  left: 50%;                /* horizontal center */
+  transform: translate(-50%, -50%); /* truly center */
+  padding: 12px 24px;
   background: linear-gradient(90deg, #7afcff, #6de6ff);
   color: #041822;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   border-radius: 12px;
   text-decoration: none;
   z-index: 9999;
@@ -1224,7 +1225,7 @@ LaserBG.init({
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 #accessBtn:hover {
-  transform: translateY(-2px) scale(1.05);
+  transform: translate(-50%, -50%) scale(1.05);
   box-shadow: 0 10px 32px rgba(122,252,255,0.4);
 }
 </style>
