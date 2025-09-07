@@ -1,1 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automatic Server Ping Tool</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+  #log { margin-top: 20px; height: 300px; overflow-y: scroll; background: #fff; padding: 10px; border: 1px solid #ccc; }
+</style>
+</head>
+<body>
+
+<h2>Automatic Server Ping Tool</h2>
+<p>Pinging automatically every 1 minute.</p>
+<div id="log"></div>
+
+<script>
+const servers = [
+    "https://server-validation-expiry.onrender.com",
+    "https://paymentserver-wr8h.onrender.com"
+]; // Add as many servers as you want
+const intervalSec = 60; // 1 minute
+let intervalId;
+
+const logDiv = document.getElementById('log');
+
+function logMessage(msg) {
+    const time = new Date().toLocaleTimeString();
+    logDiv.innerHTML += `[${time}] ${msg}<br>`;
+    logDiv.scrollTop = logDiv.scrollHeight;
+}
+
+function pingServer(url) {
+    fetch(url, { method: 'GET', mode: 'no-cors' })
+        .then(() => logMessage(`SUCCESS pinging ${url}`))
+        .catch(err => logMessage(`ERROR pinging ${url} (${err})`));
+}
+
+// Run immediately and then every 1 minute
+window.addEventListener('load', () => {
+    // Ping all servers immediately
+    servers.forEach(url => pingServer(url));
+    
+    // Set interval to ping all servers
+    intervalId = setInterval(() => {
+        servers.forEach(url => pingServer(url));
+    }, intervalSec * 1000);
+
+    logMessage(`Started automatic pinging ${servers.join(', ')} every ${intervalSec} seconds.`);
+});
+</script>
+
+</body>
+</html>
 
