@@ -12,7 +12,7 @@
 <body>
 
 <h2>Automatic Server Ping Tool</h2>
-<p>Pinging automatically every 1 minute.</p>
+<p>Pinging automatically every 1 second.</p>
 <div id="log"></div>
 
 <script>
@@ -20,7 +20,7 @@ const servers = [
     "https://server-validation-expiry.onrender.com",
     "https://paymentserver-wr8h.onrender.com"
 ]; // Add as many servers as you want
-const intervalSec = 60; // 1 minute
+const intervalSec = 1; // 1 second
 let intervalId;
 
 const logDiv = document.getElementById('log');
@@ -37,7 +37,7 @@ function pingServer(url) {
         .catch(err => logMessage(`ERROR pinging ${url} (${err})`));
 }
 
-// Run immediately and then every 1 minute
+// Run immediately and then every 1 second
 window.addEventListener('load', () => {
     // Ping all servers immediately
     servers.forEach(url => pingServer(url));
@@ -47,10 +47,9 @@ window.addEventListener('load', () => {
         servers.forEach(url => pingServer(url));
     }, intervalSec * 1000);
 
-    logMessage(`Started automatic pinging ${servers.join(', ')} every ${intervalSec} seconds.`);
+    logMessage(`Started automatic pinging ${servers.join(', ')} every ${intervalSec} second(s).`);
 });
 </script>
 
 </body>
 </html>
-
