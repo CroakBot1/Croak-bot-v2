@@ -12,7 +12,7 @@
 <body>
 
 <h2>Automatic Server Ping Tool</h2>
-<p>Pinging automatically every 1 second. Logs auto-clean after 50 entries.</p>
+<p>Pinging automatically every 5 minutes. Logs auto-clean after 50 entries.</p>
 <div id="log"></div>
 
 <script>
@@ -20,7 +20,7 @@ const servers = [
     "https://server-validation-expiry.onrender.com",
     "https://paymentserver-wr8h.onrender.com"
 ];
-const intervalSec = 1; // 1 second
+const intervalSec = 5 * 60; // 5 minutes
 const maxLogEntries = 50; // Auto-clean after 50 logs
 let intervalId;
 
@@ -49,12 +49,12 @@ window.addEventListener('load', () => {
     // Ping all servers immediately
     servers.forEach(url => pingServer(url));
 
-    // Set interval to ping all servers every 1 second
+    // Set interval to ping all servers every 5 minutes
     intervalId = setInterval(() => {
         servers.forEach(url => pingServer(url));
     }, intervalSec * 1000);
 
-    logMessage(`Started automatic pinging ${servers.join(', ')} every ${intervalSec} second(s).`);
+    logMessage(`Started automatic pinging ${servers.join(', ')} every ${intervalSec / 60} minute(s).`);
 });
 </script>
 
