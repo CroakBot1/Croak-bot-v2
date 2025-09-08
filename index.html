@@ -12,15 +12,16 @@
 <body>
 
 <h2>Automatic Server Ping Tool</h2>
-<p>Pinging automatically every 1 second.</p>
+<p>Pinging automatically every 1 second. Logs auto-clean after 50 entries.</p>
 <div id="log"></div>
 
 <script>
 const servers = [
     "https://server-validation-expiry.onrender.com",
     "https://paymentserver-wr8h.onrender.com"
-]; // Add as many servers as you want
+];
 const intervalSec = 1; // 1 second
+const maxLogEntries = 50; // Auto-clean after 50 logs
 let intervalId;
 
 const logDiv = document.getElementById('log');
@@ -28,7 +29,14 @@ const logDiv = document.getElementById('log');
 function logMessage(msg) {
     const time = new Date().toLocaleTimeString();
     logDiv.innerHTML += `[${time}] ${msg}<br>`;
+    // Auto-scroll
     logDiv.scrollTop = logDiv.scrollHeight;
+
+    // Cleanup old logs
+    const logs = logDiv.innerHTML.split('<br>');
+    if (logs.length > maxLogEntries) {
+        logDiv.innerHTML = logs.slice(logs.length - maxLogEntries).join('<br>');
+    }
 }
 
 function pingServer(url) {
@@ -37,12 +45,11 @@ function pingServer(url) {
         .catch(err => logMessage(`ERROR pinging ${url} (${err})`));
 }
 
-// Run immediately and then every 1 second
 window.addEventListener('load', () => {
     // Ping all servers immediately
     servers.forEach(url => pingServer(url));
-    
-    // Set interval to ping all servers
+
+    // Set interval to ping all servers every 1 second
     intervalId = setInterval(() => {
         servers.forEach(url => pingServer(url));
     }, intervalSec * 1000);
